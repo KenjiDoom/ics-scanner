@@ -9,6 +9,14 @@ class scanner:
         for argv in argv:
             self.option = argv
 
+    def chosing(self):
+        if self.option == '1':
+            self.rockwell_automation()
+        elif self.option == '2':
+            self.niagara_fox()
+        elif self.option == '3':
+            self.atg()
+
     def rockwell_automation(self):
         print("You chose rockwell")
     
@@ -26,6 +34,7 @@ class startProgram:
         console = Console()
         self.scada_selection()
         SCAN = scanner(console.input("[bold red]Enter the ICS product you want to scan: "))
+        SCAN.chosing()
 
     def scada_selection(self):
         console  = Console()
