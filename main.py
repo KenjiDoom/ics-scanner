@@ -17,21 +17,21 @@ class scanner:
             self.niagara_fox()
         elif self.option == '3':
             self.atg()
+    """ 
+    Is there a way to remove all this junk?, If statements look a bit outdated.
+    """
 
     def rockwell_automation(self):
-        print("You chose rockwell")
-        print("IP address is: " + self.IP)
         rock_scan = subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP])
-        #print(rock_scan) This will display CompletedProcess() function
     
     def niagara_fox(self):
-        print("You chose niagara")
+        nia_scan = subprocess.run(['nmap', '--script', 'fox-info.nse', '-p', '1911', self.IP])
     
     def atg(self):
         print("You chose atg")
 
     def output_data(self):
-        pass
+        pass 
 
 class startProgram:
     def run_program(self):
@@ -39,7 +39,6 @@ class startProgram:
         self.scada_display()
         SCAN = scanner(self.console.input("[bold cyan]Enter IP address: "))
         SCAN.scada_selection(self.console.input("[bold cyan]Enter the ICS Product you want to scan:"))
-
 
     def scada_display(self):
         """
