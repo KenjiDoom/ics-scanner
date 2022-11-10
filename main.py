@@ -1,15 +1,16 @@
 from rich.console import Console
 from rich.table import Table
-from sys import exit
-import shodan
+import subprocess
 
+# How to get IP address at the top of the code?
 class scanner:
     console = Console()
     def __init__(self, *argv):
         for argv in argv:
+            self.IP = argv
+    def scada_selection(self, *argv):
+        for argv in argv:
             self.option = argv
-
-    def chosing(self):
         if self.option == '1':
             self.rockwell_automation()
         elif self.option == '2':
@@ -19,6 +20,9 @@ class scanner:
 
     def rockwell_automation(self):
         print("You chose rockwell")
+        print("IP address is: " + self.IP)
+        rock_scan = subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP])
+        #print(rock_scan) This will display CompletedProcess() function
     
     def niagara_fox(self):
         print("You chose niagara")
@@ -31,21 +35,22 @@ class scanner:
 
 class startProgram:
     def run_program(self):
-        console = Console()
-        self.scada_selection()
-        SCAN = scanner(console.input("[bold red]Enter the ICS product you want to scan: "))
-        SCAN.chosing()
+        self.console = Console()
+        self.scada_display()
+        SCAN = scanner(self.console.input("[bold cyan]Enter IP address: "))
+        SCAN.scada_selection(self.console.input("[bold cyan]Enter the ICS Product you want to scan:"))
 
-    def scada_selection(self):
-        console  = Console()
+
+    def scada_display(self):
         """
 Going a bit old school with this apporach, please don't bash me. Possible UI in the future.
 Huge thanks to digital bond for providing these scripts.
+[New Note] Use the rich libary to output this information onto the middle of the sceen using a box like format.
         """
-        console.print("[bold blue][-] AVAILABLE SCADA SCRIPTS [-]")
-        console.print("[bold white][1]. Rockwell Automation, port 44818")
-        console.print("[bold white][2]. Niagara Fox, Port 1911")
-        console.print("[bold white][3]. ATG, Port 10001")
+        self.console.print("[bold blue][-] AVAILABLE SCADA SCRIPTS [-]")
+        self.console.print("[bold white][1]. Rockwell Automation, port 44818")
+        self.console.print("[bold white][2]. Niagara Fox, Port 1911")
+        self.console.print("[bold white][3]. ATG, Port 10001")
 
 
 start = startProgram()
