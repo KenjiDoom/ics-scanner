@@ -25,7 +25,7 @@ class scanner:
         rock_scan = subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP])
     
     def niagara_fox(self):
-        nia_scan = subprocess.run(['nmap', '--script', 'fox-info.nse', '-p', '1911', self.IP])
+        nia_scan = subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP])
     
     def atg(self):
         print("You chose atg")
