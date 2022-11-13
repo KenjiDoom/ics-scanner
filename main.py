@@ -1,7 +1,6 @@
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-
 import subprocess
 
 # How to get IP address at the top of the code?
