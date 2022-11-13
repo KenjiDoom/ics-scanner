@@ -1,7 +1,9 @@
 from rich.console import Console
+from rich.prompt import Prompt
 from rich.table import Table
 from rich.panel import Panel
 import subprocess
+import getpass
 
 # How to get IP address at the top of the code?
 class scanner:
@@ -39,8 +41,8 @@ class startProgram:
     def run_program(self):
         self.console = Console()
         self.scada_display()
-        SCAN = scanner(self.console.input("[bold cyan]Enter IP address: "))
-        SCAN.scada_selection(self.console.input("[bold cyan]Enter the ICS Product you want to scan:"))
+        SCAN = scanner(Prompt.ask("Enter IP address"))
+        SCAN.scada_selection(self.console.input("Enter the ICS Product you want to scan:"))
 
     def scada_display(self):
         table = Table(title="[bold red] Scada Scans available ", title_style="bold magenta")
@@ -49,5 +51,13 @@ class startProgram:
         table.add_row(Panel.fit("Rockwell Automation port 44818"), Panel.fit("Niagara Fox port 1911 or 4199"))
         self.console.print(table)
 
+    def get_root(self):
+        if getpass.getuser == "root":
+            run_program()
+        else:
+            print("Root needed for nmap. Please run as root")
+            exit()
+
 start = startProgram()
+start.get_root()
 start.run_program()
