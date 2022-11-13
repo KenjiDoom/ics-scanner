@@ -1,5 +1,7 @@
 from rich.console import Console
 from rich.table import Table
+from rich.panel import Panel
+
 import subprocess
 
 # How to get IP address at the top of the code?
@@ -31,6 +33,7 @@ class scanner:
         print("You chose atg")
 
     def output_data(self):
+        # To-do: Fix the orginal nse script, doesn't work becasue the code version is deprecated
         pass 
 
 class startProgram:
@@ -41,16 +44,11 @@ class startProgram:
         SCAN.scada_selection(self.console.input("[bold cyan]Enter the ICS Product you want to scan:"))
 
     def scada_display(self):
-        """
-Going a bit old school with this apporach, please don't bash me. Possible UI in the future.
-Huge thanks to digital bond for providing these scripts.
-[New Note] Use the rich libary to output this information onto the middle of the sceen using a box like format.
-        """
-        self.console.print("[bold blue][-] AVAILABLE SCADA SCRIPTS [-]")
-        self.console.print("[bold white][1]. Rockwell Automation, port 44818")
-        self.console.print("[bold white][2]. Niagara Fox, Port 1911")
-        self.console.print("[bold white][3]. ATG, Port 10001")
-
+        table = Table(title="[bold red] Scada Scans available ", title_style="bold magenta")
+        table.add_column(header="1.", justify="left", no_wrap=True)
+        table.add_column(header="2.", justify="right", no_wrap=True)
+        table.add_row(Panel.fit("Rockwell Automation port 44818"), Panel.fit("Niagara Fox port 1911 or 4199"))
+        self.console.print(table)
 
 start = startProgram()
 start.run_program()
