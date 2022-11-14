@@ -39,10 +39,14 @@ class scanner:
 
 class startProgram:
     def run_program(self):
-        self.console = Console()
-        self.scada_display()
-        SCAN = scanner(Prompt.ask("Enter IP address"))
-        SCAN.scada_selection(self.console.input("Enter the ICS Product you want to scan:"))
+        try:
+            self.console = Console()
+            self.scada_display()
+            SCAN = scanner(Prompt.ask("Enter IP address"))
+            SCAN.scada_selection(Prompt.ask("Enter the ICS Product you want to scan"))
+        except KeyboardInterrupt:
+                print("exiting program...")
+                exit()
 
     def scada_display(self):
         table = Table(title="[bold red] Scada Scans available ", title_style="bold magenta")
@@ -50,26 +54,26 @@ class startProgram:
         table.add_column(header="2.", justify="right", no_wrap=True)
         table.add_row(Panel.fit("Rockwell Automation port 44818"), Panel.fit("Niagara Fox port 1911 or 4199"))
         self.console.print(table)
-     
+
     def get_root(self):
+        self.console = Console()
         if getpass.getuser() == 'root':
             pass
-        else: 
+        else:
             try:
-                print("Root needed for nmap. Please run as root")
-                print("Would you like to run as root?")
-                root_priv = input("Y/N: ")
+                self.console.print("Root needed for nmap, would you like to run as root?")
+                root_priv = Prompt.ask("Y/N")
                 if root_priv.upper() == "Y" or root_priv.upper() == "YES":
-                    print("Running as root")
+                    subprocess.run(['clear'])
                     subprocess.run(['sudo', 'python', 'main.py'])
                 elif root_priv.upper() == "N" or root_priv.upper() == "NO":
-                    print("Exiting program.. Root priv required.")
+                    self.console.print("Root privileges required.")
                     exit()
                 exit()
             except KeyboardInterrupt:
-                print("Exiting program")
+                self.console.print("\nExiting...")
                 exit()
-
+ 
 start = startProgram()
 start.get_root()
 start.run_program()
