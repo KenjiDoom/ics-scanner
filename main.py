@@ -50,13 +50,25 @@ class startProgram:
         table.add_column(header="2.", justify="right", no_wrap=True)
         table.add_row(Panel.fit("Rockwell Automation port 44818"), Panel.fit("Niagara Fox port 1911 or 4199"))
         self.console.print(table)
-
+     
     def get_root(self):
-        if getpass.getuser == "root":
-            run_program()
-        else:
-            print("Root needed for nmap. Please run as root")
-            exit()
+        if getpass.getuser() == 'root':
+            pass
+        else: 
+            try:
+                print("Root needed for nmap. Please run as root")
+                print("Would you like to run as root?")
+                root_priv = input("Y/N: ")
+                if root_priv.upper() == "Y" or root_priv.upper() == "YES":
+                    print("Running as root")
+                    subprocess.run(['sudo', 'python', 'main.py'])
+                elif root_priv.upper() == "N" or root_priv.upper() == "NO":
+                    print("Exiting program.. Root priv required.")
+                    exit()
+                exit()
+            except KeyboardInterrupt:
+                print("Exiting program")
+                exit()
 
 start = startProgram()
 start.get_root()
