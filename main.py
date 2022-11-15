@@ -12,14 +12,15 @@ class scanner:
         for argv in argv:
             self.IP = argv
     def scada_selection(self, *argv):
-        for argv in argv:
+        for argv in argv: # Provide the user to save the output to a file, that code will go here
             self.option = argv
         if self.option == '1':
             self.rockwell_automation()
         elif self.option == '2':
             self.niagara_fox()
-        elif self.option == '3':
-            self.atg()
+        else:
+            self.console.print(self.option, "is not an option, exiting...")
+            exit()
     """ 
     Is there a way to remove all this junk?, If statements look a bit outdated.
     """
@@ -31,29 +32,40 @@ class scanner:
         nia_scan = subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP])
     
     def atg(self):
-        print("You chose atg")
+        pass
+        # To-do: Fix the orginal nse script, doesn't work becasue the code version is deprecated
+        # Also note I tried using the nmap python API but it doesn't work with custom scripts
 
     def output_data(self):
-        # To-do: Fix the orginal nse script, doesn't work becasue the code version is deprecated
         pass 
 
 class startProgram:
+    console = Console()
     def run_program(self):
         try:
             self.console = Console()
-            self.scada_display()
-            SCAN = scanner(Prompt.ask("Enter IP address"))
+            self.IP_menu()
+            subprocess.run(['clear'])
+            self.scada_menu()
+            SCAN = scanner(self.IP_address)
             SCAN.scada_selection(Prompt.ask("Enter the ICS Product you want to scan"))
         except KeyboardInterrupt:
-                print("exiting program...")
+                self.console.print("[bold red]Exiting...")
                 exit()
 
-    def scada_display(self):
+    def scada_menu(self):
         table = Table(title="[bold red] Scada Scans available ", title_style="bold magenta")
         table.add_column(header="1.", justify="left", no_wrap=True)
         table.add_column(header="2.", justify="right", no_wrap=True)
         table.add_row(Panel.fit("Rockwell Automation port 44818"), Panel.fit("Niagara Fox port 1911 or 4199"))
         self.console.print(table)
+    
+    def IP_menu(self):
+        table = Table(title="[bold red]IP address information", title_style="bold magenta")
+        table.add_column(header="1.", justify="left", no_wrap=True)
+        table.add_row(Panel.fit("Enter the IP address of the target you want to scan."))
+        self.console.print(table)
+        self.IP_address = Prompt.ask("Enter IP address")
 
     def get_root(self):
         self.console = Console()
@@ -73,7 +85,8 @@ class startProgram:
             except KeyboardInterrupt:
                 self.console.print("\nExiting...")
                 exit()
- 
+
 start = startProgram()
 start.get_root()
 start.run_program()
+#start.IP_menu()
