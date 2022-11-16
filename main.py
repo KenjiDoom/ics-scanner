@@ -26,12 +26,17 @@ class scanner:
     """
 
     def rockwell_automation(self):
-        subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP])
+        table = Table(title="Nmap results")
+        table.add_column("Nmap results for rockwell automation systems")
+        table.add_row(str(subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP], capture_output=True)))
+        self.console.print(table)
     
     def niagara_fox(self):
-        subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP])
-        
-    
+        table = Table(title="NMAP RESULTS")
+        table.add_column("Nmap results for Niagara Fox System")
+        table.add_row(str(subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP],  capture_output=True)))
+        self.console.print(table)
+
     def atg(self):
         pass
         # To-do: Fix the orginal nse script, doesn't work becasue the code version is deprecated
