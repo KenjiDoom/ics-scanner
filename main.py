@@ -26,30 +26,17 @@ class scanner:
     """
 
     def rockwell_automation(self):
-        rock_scan = subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP])
+        subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP])
     
     def niagara_fox(self):
-        # These are commands keep that in mind. So nia_scan would be converted into a hex, if you wanted to print it out.
-        #nia_scan = subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP])
-        self.output_data(subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP]))
+        subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP])
         
     
     def atg(self):
         pass
         # To-do: Fix the orginal nse script, doesn't work becasue the code version is deprecated
         # Also note I tried using the nmap python API but it doesn't provide custom scripts
-    
-    def output_data(self, *data): # nmap data will be printed here, inside of a box
-        # In here, we will get the data from other functions using arguments.
-        print("working")
-        print(data)
 
-"""
- What function would we have to call first? The scan or the output data one?
- We will call the scan function first & then the data from the function will be given to the output_data() function.
- rockwell_automation -> output_data()
- Using args, because we want to use the output_data as a global function. No duplicates.
-""" 
 class startProgram:
     console = Console()
     def run_program(self):
@@ -97,12 +84,6 @@ class startProgram:
                 self.console.print("\nExiting...")
                 exit()
 
-# starting the program function
 start = startProgram()
 start.get_root()
 start.run_program()
-start.IP_menu()
-
-# scanner function
-#scan = scanner()
-#scan.output_data('test')
