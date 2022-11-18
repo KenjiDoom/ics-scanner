@@ -28,7 +28,7 @@ class scanner:
     def rockwell_automation(self):
         table = Table(title="Nmap results")
         table.add_column("Nmap results for rockwell automation systems")
-        table.add_row(str(subprocess.run(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP], capture_output=True)))
+        table.add_row(subprocess.Popen(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
     
     def niagara_fox(self):
