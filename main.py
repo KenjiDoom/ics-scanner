@@ -34,7 +34,7 @@ class scanner:
     def niagara_fox(self):
         table = Table(title="NMAP RESULTS")
         table.add_column("Nmap results for Niagara Fox System")
-        table.add_row(str(subprocess.run(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP],  capture_output=True)))
+        table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
 
     def atg(self):
