@@ -5,7 +5,6 @@ from rich.panel import Panel
 import subprocess
 import getpass
 
-# How to get IP address at the top of the code?
 class scanner:
     console = Console()
     def __init__(self, *argv):
@@ -26,15 +25,20 @@ class scanner:
     """
 
     def rockwell_automation(self):
-        table = Table(title="Nmap results")
-        table.add_column("Nmap results for rockwell automation systems")
-        table.add_row(subprocess.Popen(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
+        table = Table(title="Nmap results for Rockwell Automation Systems")
+        table.add_column("TCP")
+        table.add_column("UDP")
+        with self.console.status("Scanning...") as status:
+            subprocess.run(['clear'])
+            self.console.log(table.add_row(subprocess.Popen(['nmap', '--script', 'enip-info', '-Pn', '-p', '44818', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'), subprocess.Popen(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8')))
         self.console.print(table)
     
     def niagara_fox(self):
         table = Table(title="NMAP RESULTS")
         table.add_column("Nmap results for Niagara Fox System")
-        table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
+        with self.console.status("Scanning...") as status:
+            subprocess.run(['clear'])
+            table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
 
     def atg(self):
