@@ -11,7 +11,7 @@ class scanner:
         for argv in argv:
             self.IP = argv
     def scada_selection(self, *argv):
-        for argv in argv: # Provide the user to save the output to a file, that code will go here
+        for argv in argv:
             self.option = argv
         if self.option == '1':
             self.rockwell_automation()
@@ -30,7 +30,7 @@ class scanner:
         table.add_column("UDP")
         with self.console.status("Scanning...") as status:
             subprocess.run(['clear'])
-            self.console.log(table.add_row(subprocess.Popen(['nmap', '--script', 'enip-info', '-Pn', '-p', '44818', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'), subprocess.Popen(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8')))
+            self.console.log(table.add_row(subprocess.Popen(['nmap', '--script', 'enip-info', '-Pn', '-p', '44818', self.IP, '-oN', self.IP + '_TCP_SCAN.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'), subprocess.Popen(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP, '-oN', self.IP + '_UDP_SCAN.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8')))
         self.console.print(table)
     
     def niagara_fox(self):
@@ -38,7 +38,7 @@ class scanner:
         table.add_column("Nmap results for Niagara Fox System")
         with self.console.status("Scanning...") as status:
             subprocess.run(['clear'])
-            table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
+            table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP, '-oN', self.IP + '_TCP.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
 
     def atg(self):
