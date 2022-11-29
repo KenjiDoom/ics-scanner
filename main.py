@@ -113,7 +113,7 @@ class startProgram:
                 root_priv = Prompt.ask("Y/N")
                 if root_priv.upper() == "Y" or root_priv.upper() == "YES":
                     subprocess.run(['clear'])
-                    subprocess.run(['sudo', 'python', 'main.py'])
+                    subprocess.run(['sudo', 'python3', 'main.py'])
                 elif root_priv.upper() == "N" or root_priv.upper() == "NO":
                     self.console.print("Root privileges required.")
                     exit()
