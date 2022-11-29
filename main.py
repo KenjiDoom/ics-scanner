@@ -36,6 +36,7 @@ class scanner:
             subprocess.run(['clear'])
             self.console.log(table.add_row(subprocess.Popen(['nmap', '--script', 'enip-info', '-Pn', '-p', '44818', self.IP, '-oN', self.IP + '_TCP_SCAN.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'), subprocess.Popen(['nmap', '--script', 'enip-info', '-sU', '-Pn', '-p', '44818', self.IP, '-oN', self.IP + '_UDP_SCAN.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8')))
         self.console.print(table)
+        self.shodan_menu()
 
     def niagara_fox(self):
         table = Table(title="NMAP RESULTS")
@@ -44,6 +45,7 @@ class scanner:
             subprocess.run(['clear'])
             table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP, '-oN', self.IP + '_TCP.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
+        self.shodan_menu()
         
     def shodan_menu(self):
         #self.console.print("Would you like to run a shodan scan agianst", self.IP)
