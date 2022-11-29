@@ -44,7 +44,16 @@ class scanner:
             subprocess.run(['clear'])
             table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP, '-oN', self.IP + '_TCP.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
-
+        
+    def shodan_menu(self):
+        #self.console.print("Would you like to run a shodan scan agianst", self.IP)
+        sho = Prompt.ask("Would you like to run a shodan scan on the IP, Y/N")
+        if sho.upper == 'YES' or sho.upper() == 'Y':
+            self.shodan_scan()
+            self.output_format()
+        elif sho.upper == 'NO' or sho.upper() == 'N':
+            print('Exiting...')
+            
     def shodan_scan(self):
         api = shodan.Shodan()
         host = api.host(self.IP)
