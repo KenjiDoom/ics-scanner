@@ -19,8 +19,7 @@ class scanner:
         elif self.option == '2':
             self.niagara_fox()
         elif self.option == '3':
-            self.shodan_scan()
-            self.output_format()
+            self.shodan_menu()
         else:
             self.console.print(self.option, "is not an option, exiting...")
             exit()
@@ -46,18 +45,19 @@ class scanner:
             table.add_row(subprocess.Popen(['nmap', '-Pn', '-sT', '--script', 'fox-info.nse', '-p', '1911,4911', self.IP, '-oN', self.IP + '_TCP.txt'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode('utf-8'))
         self.console.print(table)
         self.shodan_menu()
-        
+
     def shodan_menu(self):
-        #self.console.print("Would you like to run a shodan scan agianst", self.IP)
-        sho = Prompt.ask("Would you like to run a shodan scan on the IP, Y/N")
+        sho = Prompt.ask("Run shodan scan on IP? Y/N")
         if sho.upper == 'YES' or sho.upper() == 'Y':
             self.shodan_scan()
             self.output_format()
         elif sho.upper == 'NO' or sho.upper() == 'N':
             print('Exiting...')
-            
+        else:
+            print('Exiting....')
+
     def shodan_scan(self):
-        api = shodan.Shodan()
+        api = shodan.Shodan('')
         host = api.host(self.IP)
         self.ip, self.banner, self.port, self.city, self.domains, self.asn = [],[],[],[],[],[]
         for items in host['data']:
@@ -109,7 +109,8 @@ class startProgram:
     
     def IP_menu(self):
         table = Table(title="[bold red]IP address information", title_style="bold magenta")
-        table.add_column(header="1.", justify="left", no_wrap=True)
+        table = Table()
+        table.add_column(header="1. IP Address information", justify="left", no_wrap=True)
         table.add_row(Panel.fit("Enter the IP address of the target you want to scan."))
         self.console.print(table)
         self.IP_address = Prompt.ask("Enter IP address")
@@ -120,13 +121,14 @@ class startProgram:
             pass
         else:
             try:
-                self.console.print("Root needed for nmap, would you like to run as root?")
-                root_priv = Prompt.ask("Y/N")
+                self.console.print("⚠️[bold red] Root needed for nmap, would you like to run as root?⚠️")
+                root_priv = Prompt.ask("[bold green]Y/N")
                 if root_priv.upper() == "Y" or root_priv.upper() == "YES":
                     subprocess.run(['clear'])
                     subprocess.run(['sudo', 'python3', 'main.py'])
                 elif root_priv.upper() == "N" or root_priv.upper() == "NO":
-                    self.console.print("Root privileges required.")
+                    self.console.print("[bold red]Exiting...")
+                    self.console.print("[bold red]Root privileges required.")
                     exit()
                 exit()
             except KeyboardInterrupt:
